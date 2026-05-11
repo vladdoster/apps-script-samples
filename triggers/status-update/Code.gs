@@ -16,6 +16,44 @@
 
 // [START apps_script_triggers_status_update]
 /**
+ * Looks up the meet_link for a given email in the Reviewers sheet.
+ *
+ * @param {string} email The reviewer email to look up.
+ * @return {string|null} The meet_link value or null if not found.
+ */
+function getMeetLink(email) {
+  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const reviewersSheet = spreadsheet.getSheetByName("Reviewers");
+
+  if (!reviewersSheet) {
+    console.log("Reviewers sheet not found");
+    return null;
+  }
+
+  // Get all data from the Reviewers sheet
+  const data = reviewersSheet.getDataRange().getValues();
+  const headers = data[0];
+
+  // Find column indices
+  const emailColIndex = headers.indexOf("email");
+  const meetLinkColIndex = headers.indexOf("meet_link");
+
+  if (emailColIndex === -1 || meetLinkColIndex === -1) {
+    console.log("Required columns not found in Reviewers sheet");
+    return null;
+  }
+
+  // Search for the email in the data
+  for (let i = 1; i < data.length; i++) {
+    if (data[i][emailColIndex] === email) {
+      return data[i][meetLinkColIndex];
+    }
+  }
+
+  return null;
+}
+
+/**
  * Triggers when a cell is edited in the spreadsheet.
  * Checks if the "status" column changed from 'pending' to 'started'.
  * If so, logs the reviewer_email, task_url, and L0_email for that row.
@@ -67,6 +105,14 @@ function onEdit(e) {
     console.log(`Reviewer Email: ${reviewerEmail}`);
     console.log(`Task URL: ${taskUrl}`);
     console.log(`L0 Email: ${l0Email}`);
+
+    // Look up meet_link from Reviewers sheet
+    const meetLink = getMeetLink(reviewerEmail);
+    if (meetLink) {
+      console.log(`Meeting Link: ${meetLink}`);
+    } else {
+      console.log("No meeting link is set");
+    }
   }
 }
 // [END apps_script_triggers_status_update]
