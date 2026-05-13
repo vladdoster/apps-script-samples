@@ -1,11 +1,11 @@
 /**
- * Copyright 2022 Google LLC
+ * Copyright Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,18 +14,17 @@
  * limitations under the License.
  */
 
-// [START chat_webhook]
-function webhook() {
-  const url =
-    "https://chat.googleapis.com/v1/spaces/SPACE_ID/messages?key=KEY&token=TOKEN";
-  const options = {
-    method: "post",
-    headers: { "Content-Type": "application/json; charset=UTF-8" },
-    payload: JSON.stringify({
-      text: "Hello from Apps Script!",
-    }),
-  };
-  const response = UrlFetchApp.fetch(url, options);
-  console.log(response);
+/**
+ * Tests createStatusChangeTriggers function of statusChange.gs
+ */
+function itShouldCreateStatusChangeTriggers() {
+  console.log("> itShouldCreateStatusChangeTriggers");
+  createStatusChangeTriggers();
 }
-// [END chat_webhook]
+
+/**
+ * Run all the tests for statusChange.gs
+ */
+function RUN_STATUS_CHANGE_TESTS() {
+  itShouldCreateStatusChangeTriggers();
+}
